@@ -53,13 +53,15 @@ const hideSpinner = () => {
 };
 
 const createSaveBtn = (saveUrl) => {
+    const canvas = document.querySelector('#qrcode canvas');
+    const dataUrl = canvas.toDataURL('image/png');
+
     const link = document.createElement('a');
     link.id = 'save-link';
-    link.classList =
-        'btn-success btn my-4';
-    link.href = saveUrl;
+    link.classList = 'btn-success btn my-4';
+    link.href = dataUrl;
     link.style = 'width:300px'
-    link.download = 'qrcode';
+    link.download = 'qrcode.png';
     link.innerHTML = 'Save Image';
     document.getElementById('generated').appendChild(link);
 };
