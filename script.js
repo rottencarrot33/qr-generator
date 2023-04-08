@@ -7,7 +7,7 @@ const onGenerateSubmit = (e) => {
     clearUI();
 
     const url = document.getElementById('url').value;
-    const size = document.getElementById('size').value;
+
 
     if (url === '') {
         alert('Please enter a URL');
@@ -17,7 +17,7 @@ const onGenerateSubmit = (e) => {
         setTimeout(() => {
             hideSpinner();
 
-            generateQRCode(url, size);
+            generateQRCode(url);
 
             setTimeout(() => {
                 const saveUrl = qr.querySelector('img').src;
@@ -28,11 +28,23 @@ const onGenerateSubmit = (e) => {
     }
 };
 
-const generateQRCode = (url, size) => {
+// Add https:// on the URL form
+const url = document.getElementById('url');
+
+url.addEventListener('blur', function () {
+    const urlInput = url.value.trim();
+
+    if (urlInput !== '' && !urlInput.startsWith('http')) {
+        url.value = 'https://' + urlInput;
+    }
+})
+
+const generateQRCode = (url) => {
+
     const qrcode = new QRCode('qrcode', {
         text: url,
-        width: size,
-        height: size,
+        width: 300,
+        height: 300,
     });
 };
 
@@ -52,6 +64,7 @@ const hideSpinner = () => {
     document.getElementById('spinner').style.display = 'none';
 };
 
+// Create button
 const createSaveBtn = (saveUrl) => {
     const canvas = document.querySelector('#qrcode canvas');
     const dataUrl = canvas.toDataURL('image/png');
@@ -65,6 +78,7 @@ const createSaveBtn = (saveUrl) => {
     link.innerHTML = 'Save Image';
     document.getElementById('generated').appendChild(link);
 };
+
 
 hideSpinner();
 
